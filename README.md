@@ -17,6 +17,8 @@
 - [Differences Between Parallel and Distributed Computing](#differences-between-parallel-and-distributed-computing)
 - [Amdahl's law](#amdahls-law)
 - [Structure of this directory](#structure-of-this-directory)
+  - [1. Copy the Template Structure to Markdown](#1-copy-the-template-structure-to-markdown)
+  - [2. Ensure to Keep Capital of Directories in Git](#2-ensure-to-keep-capital-of-directories-in-git)
 <br />
 
 
@@ -45,6 +47,7 @@ no need to wait for a task to be done. Instead, you can do other things while wa
 
 ## 3. synchronously 
 need to wait for a task to be finished and then you can do other things 
+
 
 <br />
 
@@ -151,3 +154,37 @@ flowchart TB
 
 # Structure of this directory
 * Celery
+* Asynchronous
+
+
+<br />
+
+## 1. Copy the Template Structure to Markdown
+
+```
+<!-- omit in toc -->
+# Introduction
+
+<br />
+
+<!-- omit in toc -->
+# Table of Contents
+
+<br />
+
+# Fundamental Concepts
+
+<br />
+
+# Packages
+
+<br />
+
+# Commands 
+
+```
+
+## 2. Ensure to Keep Capital of Directories in Git
+```
+git config core.ignorecase false
+```

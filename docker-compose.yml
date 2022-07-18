@@ -1,0 +1,9 @@
+version: '2'
+services:
+  jupyter-base-notebook:
+    image: pachyderm/jupyterhub-pachyderm-user:1.1.0
+    ports:
+      - 8888:8888
+    container_name: jupyter_notebook
+    volumes:
+      - ./:/home/jovyan/work/
