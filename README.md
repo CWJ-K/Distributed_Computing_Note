@@ -1,5 +1,7 @@
 <!-- omit in toc -->
+
 # Table of Contents
+- [Table of Contents](#table-of-contents)
 - [Introduction](#introduction)
 - [Fundamental Concepts](#fundamental-concepts)
   - [1. Networks](#1-networks)
@@ -18,6 +20,8 @@
 - [Amdahl's law](#amdahls-law)
 - [Structure of this directory](#structure-of-this-directory)
   - [1. Copy the Template Structure to Markdown](#1-copy-the-template-structure-to-markdown)
+    - [1.1. Example](#11-example)
+    - [1.2. Example of exercise](#12-example-of-exercise)
   - [2. Ensure to Keep Capital of Directories in Git](#2-ensure-to-keep-capital-of-directories-in-git)
 <br />
 
@@ -161,6 +165,7 @@ flowchart TB
 
 ## 1. Copy the Template Structure to Markdown
 
+### 1.1. Example
 ```
 <!-- omit in toc -->
 # Introduction
@@ -183,6 +188,26 @@ flowchart TB
 # Commands 
 
 ```
+
+### 1.2. Example of exercise
+```
+<!-- omit in toc -->
+# Table of Contents
+
+<br />
+
+# Introduction
+
+<br />
+
+# Structure
+
+<br />
+
+# Commands 
+
+```
+
 
 ## 2. Ensure to Keep Capital of Directories in Git
 ```
