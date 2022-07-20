@@ -2,6 +2,8 @@ from threading import Thread
 from queue import Queue
 import urllib.request
 
+from time import time
+
 URL = 'http://finance.yahoo.com/d/quotes.csv?s={}=X&f=p'
 
 def get_rate(pair, outq, url_tmplt=URL):
@@ -25,7 +27,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     outputq = Queue()
-
+    
     for pair in args.pairs:
         t = Thread(
                 target=get_temp_data,
@@ -44,3 +46,4 @@ if __name__ == '__main__':
         outputq.task_done()
     
     outputq.join()
+    

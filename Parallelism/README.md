@@ -35,14 +35,39 @@ Using more CPUs increases **speed** for CPU-intensive problems and **responsiven
 <br />
 
 ## Multiple Threads
-* Goal
+* Improve performance of **I/O intensive threads**
+  * Issue: race condition
+  * Solution: Lock
+* No effects on **CPU-intensive computation** because of GLI
 
+<br />
 
+### Packages
+* threading
+  * Thread-based parallelism
+* queue
+  * FIFO to perform tasks
+  * implements **multi-producer**, **multi-consumer** queues
+    * useful in threaded programming when information must be exchanged safely **between multiple threads**
 
 <br />
 
 ## Multiple Processes
-* Goal
+* process-based parallelism
+* Improve performance of CPU-intensive computation
+  * use multiple processes instead of multiple threads to work around the GIL
+* Disadvantage
+  * launching multiple instances of Python interpreter spends startup time and memory usage
+* Advantage
+  * multiple processes have their memory => **share-nothing architecture**
+  * easily scale to a distributed application from a single-machine
+
+<br />
+
+### Packages
+* multiprocessing
+* concurrent.futures
+  * builds on top of multiprocessing
 
 <br />
 
@@ -50,28 +75,12 @@ Using more CPUs increases **speed** for CPU-intensive problems and **responsiven
 * Goal
 
 
-<br />
-
-# Packages
-## threading
-* Thread-based parallelism
-
-<br />
-
-## queue
-* FIFO to perform tasks
-* implements **multi-producer**, **multi-consumer** queues
-  * useful in threaded programming when information must be exchanged safely **between multiple threads**
-  * 
+  
 
 <br />
 
 # Commands 
 ## threading
-
-
-<br />
-
 ### thread_a.daemon
 * a boolean value indicates whether thread_a is a daemon thread
   * **daemon thread**: a thread runs in the background
@@ -95,9 +104,18 @@ Using more CPUs increases **speed** for CPU-intensive problems and **responsiven
 
 <br />
 
-### queue_1.join()
-* blocks queue_1 until all items in the queue_1 have been gotten and processed
+### queue.join()
+* blocks queue until all items in the queue have been gotten and processed
+  * until enough task_done calls are received, the system starts to do other things
 
+<br />
+
+### concurrent.futures
+
+
+
+
+<br />
 
 
 # Reference
