@@ -20,7 +20,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     assert args.n >= 1, 'The number of threads has to be > 1'
-    with cf.ProcessPoolExecutor(max_workers=args.n) as pool:
+    with cf.ThreadPoolExecutor(max_workers=args.n) as pool:
         results = pool.map(fib, [args.number] * args.n)
-
-    

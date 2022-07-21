@@ -4,6 +4,17 @@ How to use more than one CPU at the same time to run codes in Python?
 
 Using more CPUs increases **speed** for CPU-intensive problems and **responsiveness** for I/O-intensive code. 
 
+Main difficulties:
+* get data access right
+* avoid race conditions corrupting shared data
+
+Have clarity in mind:
+* know which part to be parallelized
+* what the theoretical maximum speedup is 
+* know when to stop optimizing parallelized tasks (Amdahl's law, Gustafson's law)
+
+Other existing parallel libraries:
+* NumPy
 
 <br />
 
@@ -61,18 +72,29 @@ Using more CPUs increases **speed** for CPU-intensive problems and **responsiven
 * Advantage
   * multiple processes have their memory => **share-nothing architecture**
   * easily scale to a distributed application from a single-machine
-
+* Issue: how to exchange data between the workers
 <br />
 
 ### Packages
 * multiprocessing
+  * Manager class
+    * support processes running on difference machines and communicating over the network
 * concurrent.futures
   * builds on top of multiprocessing
+  * modules:
+    * ProcessPoolExecutor
+      * create a pool of process
+    * ThreadPoolExecutor
+      * create a pool of threads
 
 <br />
 
 ## Multiprocess Queues
-* Goal
+* Exchange data between workers in the form of queues and pipes
+
+### Package
+* multiprocessing.Queue
+  * items store in queues need to be pickable
 
 
   
@@ -89,6 +111,10 @@ Using more CPUs increases **speed** for CPU-intensive problems and **responsiven
 <br />
 
 ## queue
+### queue_1.put()
+* put the input in queue_1 (no executing anything)
+  * e.g. tuple: put((function, arguments))
+
 ### queue_1.get()
 * **remove** and **return** an item from the queue
 
@@ -111,7 +137,24 @@ Using more CPUs increases **speed** for CPU-intensive problems and **responsiven
 <br />
 
 ### concurrent.futures
-
+* ProcessPoolExecutor and ThreadPoolExecutor are both subclasses of the same class. They have three methods:
+  * `submit(f, *args, **kwargs)`
+    * to schedule an asynchronous call for `f`
+    * return a `Future` instance
+  * `map(f, *arglist, timeout=None, chunksize=1)`
+    * same as `map()`
+    * return a list of `Future` objects instead of `actual results`
+    * if using a context manager, the output of the context manager's exit is the actual result
+  * `shutdown(wait=True)`
+    * free the resources used by the Executor as currently scheduled functions are done
+* `Future` instance
+  * a placeholder for the result of an asynchronous call
+  * call `result(timeout)` to access values once the result is ready
+    * `TimeoutError` implies waiting for the future object to be available or asking objects without a timeout 
+  * inspect `Future` instance
+    * `future.running()`
+    * `future.done()`
+    * `future.cancelled()`
 
 
 
