@@ -8,6 +8,8 @@ How to apply Celery in distributed computing?
 # Table of Contents
 - [Fundamental Concepts](#fundamental-concepts)
   - [1. Celery Flow](#1-celery-flow)
+  - [Performance degrades](#performance-degrades)
+  - [Write Celery in Production](#write-celery-in-production)
 - [Commands](#commands)
   - [1. Create an **entry point** of Celery, which is called Celery application/app](#1-create-an-entry-point-of-celery-which-is-called-celery-applicationapp)
   - [2. Register as a Celery **Task**](#2-register-as-a-celery-task)
@@ -16,6 +18,7 @@ How to apply Celery in distributed computing?
     - [3.2. delay](#32-delay)
     - [3.3. signature](#33-signature)
       - [3.3.1. opposite signature: immutable signature](#331-opposite-signature-immutable-signature)
+  - [remove all tasks from queue](#remove-all-tasks-from-queue)
 - [Reference](#reference)
 
 <br />
@@ -31,12 +34,80 @@ graph LR;
 
 <br />
 
+## Performance degrades
+* synchronization primitives are expensive and should be only used when absolutely necessary
+  * because Celery keeps polling for the partial results from a group to be ready so that subsequent tasks can be scheduled
+
+<br />
+
+## Write Celery in Production
+1. use a configuration module for Celery application
+   ```python
+    import celery
+
+    app = celery.Celery('mergesort')
+    app.config_from_object('config')
+    
+    BROKEN_URL = ''
+    CELERY_RESULT_BACKEND = ''
+   
+   ```
+
+2. use more than one queue to prioritize tasks for better performance
+   ```python
+
+    CELERY_ROUTES = {
+      'project.task1': {'queue': 'queue1'},
+      'project.task2': {'queue': 'queue2'},
+    }
+   
+   ```
+
+   ```s
+    celery -A project worker -Q queue1
+    celery -A project worker -Q queue2
+
+   
+   ```
+3. control worker pool size `-c`
+   ```s
+    celery -A project worker -c 8
+
+   
+   ```
+
+4. by default, Celery uses a pool of **worker processes** => multiprocessing module
+  * if handling I/O intensive tasks, switch to coroutines or threads  
+    ```s
+      celery -A project worker -P threads
+    
+    ```
+
+<br />
+
+
 # Commands 
 
 ## 1. Create an **entry point** of Celery, which is called Celery application/app
 
   ```python
   app = Celery('<current_module_name>', include=[''], broker='<message_broker_URL>')
+
+  # use rabbitmq as broker and backend (rpc)
+
+  app = celery.Celery(
+    'test',
+    broker='amqp://user:pwd@172.105.218.103',
+    backend='rpc://user:pwd@172.105.218.103'
+    )
+
+  # use redis as backend
+  app = celery.Celery(
+    'test',
+    broker='amqp://user:pwd@172.105.218.103',
+    backend='redis://172.104.123.236'
+    )
+
   ```
 
 * current_module_name
@@ -102,6 +173,11 @@ graph LR;
   #>>4
   ```
 
+## remove all tasks from queue
+```s
+  celery purge
+
+```
 
 # Reference
 
